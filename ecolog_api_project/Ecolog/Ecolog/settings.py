@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'topics',
     'categories',
+    'external_apis',
 ]
 
 AUTH_USER_MODEL = 'users.User'
