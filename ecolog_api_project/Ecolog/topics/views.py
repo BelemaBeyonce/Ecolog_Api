@@ -6,6 +6,7 @@ from .models import Topic, Favorite
 from .serializers import TopicSerializer, FavoriteSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from .permissions import IsOwnerOrReadOnly
 
 class TopicListView(generics.ListCreateAPIView):
     queryset = Topic.objects.all()
@@ -13,15 +14,17 @@ class TopicListView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['category']
     search_fields = ['title', 'content']
+    permission_classes = [IsAuthenticated] # Only authenticated users can create topics
     
     def perform_create(self, serializer):
-        serializer.save()
+        serializer.save(owner=self.request.user)
 
 class TopicDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
-    # You can add permissions here to ensure only the owner can edit/delete
-    # For now, let's keep it open for development purposes.
+    permission_classes = [IsOwnerOrReadOnly]
+    #adding permissions here to ensure only the owner can edit/delete
+    
 
 class TopicFavoriteView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]

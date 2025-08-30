@@ -8,6 +8,8 @@ class Topic(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='topics', null=True) 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='topics') #for tracking topic ownership
+
 
     def __str__(self):
         return self.title
