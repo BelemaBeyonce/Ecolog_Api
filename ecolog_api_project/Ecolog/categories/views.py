@@ -13,6 +13,11 @@ class CategoryTopicsView(generics.ListAPIView):
     serializer_class = TopicSerializer
 
     def get_queryset(self):
+        #getting topics based on category id from the url
+        if getattr(self, 'swagger_fake_view', False):
+            return Topic.objects.none()
+        
+
         category_id = self.kwargs.get('pk')
         category = get_object_or_404(Category, id=category_id)
         return Topic.objects.filter(category=category)

@@ -27,6 +27,8 @@ class TopicDetailView(generics.RetrieveUpdateDestroyAPIView):
     
 
 class TopicFavoriteView(generics.GenericAPIView):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
     permission_classes = [IsAuthenticated]
     
     def post(self, request, pk):
@@ -37,6 +39,11 @@ class TopicFavoriteView(generics.GenericAPIView):
             return Response({"detail": "Topic already in favorites."}, status=status.HTTP_409_CONFLICT)
         
         return Response({"detail": "Topic added to favorites."}, status=status.HTTP_201_CREATED)
+    
+    def perform_create(self, serializer):
+        topic_id = self.kwargs.get('id')
+        topic = get_object_or_404(Topic, id=topic_id)
+        serializer.save(user=self.request.user, topic=topic)
 
     def delete(self, request, pk):
         topic = get_object_or_404(Topic, pk=pk)
@@ -46,6 +53,8 @@ class TopicFavoriteView(generics.GenericAPIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Favorite.DoesNotExist:
             return Response({"detail": "Topic not in favorites."}, status=status.HTTP_404_NOT_FOUND)
+        
+    
 
 class FavoriteListView(generics.ListAPIView):
     serializer_class = FavoriteSerializer

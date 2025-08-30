@@ -42,13 +42,33 @@ INSTALLED_APPS = [
     'topics',
     'categories',
     'external_apis',
+    'drf_yasg',
+    'djoser', #for swagger documentation
 ]
 
 AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ["rest_framework_simplejwt.authentication.JWTAuthentication"],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserProfileSerializer',
+        'user': 'users.serializers.UserProfileSerializer',
+        'current_user': 'users.serializers.UserProfileSerializer',
+    },  
+    'PERMISSIONS': {
+        'password_reset': ['rest_framework.permissions.AllowAny'],
+    }
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

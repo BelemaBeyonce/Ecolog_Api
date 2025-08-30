@@ -1,6 +1,6 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .serializers import UserRegistrationSerializer, UserSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileSerializer
 from .models import User
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -14,5 +14,13 @@ class UserProfileView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        return self.request.user
+    
+class MyProfileView(generics.RetrieveAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        # This method returns the currently authenticated user object
         return self.request.user
 # Create your views here.
