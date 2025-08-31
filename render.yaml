@@ -3,7 +3,7 @@ services:
     name: ecolog-api
     env: python
     buildCommand: "pip install -r requirements.txt && python Ecolog/manage.py collectstatic --no-input"
-    startCommand: "python Ecolog/manage.py migrate && gunicorn Ecolog.wsgi:application"
+    startCommand: "python Ecolog/manage.py migrate && python Ecolog/manage.py collectstatic --no-input && /opt/render/project/src/.venv/bin/gunicorn --chdir Ecolog Ecolog.wsgi:application"
     healthCheckPath: /api/auth/users/
     envVars:
       - key: DATABASE_URL
