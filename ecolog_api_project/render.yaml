@@ -2,9 +2,7 @@ services:
   - type: web
     name: ecolog-api
     env: python
-    # Correct build command: includes the 'Ecolog/' folder path
-    buildCommand: "pip install -r Ecolog/requirements.txt && python Ecolog/manage.py collectstatic --no-input"
-    # Correct start command: includes the 'Ecolog/' folder path
+    buildCommand: "pip install -r requirements.txt && python Ecolog/manage.py collectstatic --no-input"
     startCommand: "python Ecolog/manage.py migrate && gunicorn Ecolog.wsgi:application"
     healthCheckPath: /api/auth/users/
     envVars:
