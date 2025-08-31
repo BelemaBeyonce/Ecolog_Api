@@ -14,6 +14,7 @@ djoser==2.3.3
 drf-yasg==1.21.10
 Faker==37.1.0
 filelock==3.18.0
+gunicorn==23.0.0
 idna==3.10
 inflection==0.5.1
 lasio==0.31
@@ -51,4 +52,5 @@ uritemplate==4.2.0
 urllib3==2.5.0
 virtualenv==20.30.0
 wcwidth==0.2.13
+whitenoise==6.9.0
 xgboost==3.0.4
