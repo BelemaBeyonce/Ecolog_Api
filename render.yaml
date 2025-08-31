@@ -2,8 +2,10 @@ services:
   - type: web
     name: ecolog-api
     env: python
+    # Build command: Installs packages and collects static files
     buildCommand: "pip install -r requirements.txt && python Ecolog/manage.py collectstatic --no-input"
-    startCommand: "python Ecolog/manage.py migrate && python Ecolog/manage.py collectstatic --no-input && /opt/render/project/src/.venv/bin/gunicorn --chdir Ecolog Ecolog.wsgi:application"
+    # Start command: This command is very robust
+    startCommand: "python Ecolog/manage.py migrate && python -m gunicorn --chdir Ecolog Ecolog.wsgi:application"
     healthCheckPath: /api/auth/users/
     envVars:
       - key: DATABASE_URL
