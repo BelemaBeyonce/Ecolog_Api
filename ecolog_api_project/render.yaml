@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ecolog-api
+    env: python
+    # Correct build command: includes the 'Ecolog/' folder path
+    buildCommand: "pip install -r Ecolog/requirements.txt && python Ecolog/manage.py collectstatic --no-input"
+    # Correct start command: includes the 'Ecolog/' folder path
+    startCommand: "python Ecolog/manage.py migrate && gunicorn Ecolog.wsgi:application"
+    healthCheckPath: /api/auth/users/
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ecolog-database
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
