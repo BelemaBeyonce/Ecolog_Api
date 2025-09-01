@@ -39,6 +39,6 @@ def api_root(request, format=None):
     return Response({
         'users': reverse('user-list', request=request, format=format),
         'register': reverse('user-register', request=request, format=format),
-        'profile': reverse('user-profile', request=request, format=format),
+        
     })
 
