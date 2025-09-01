@@ -1,6 +1,8 @@
 from rest_framework import generics, permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import UserRegistrationSerializer, UserSerializer, UserProfileSerializer
+from django.shortcuts import render
+from django.http import HttpResponse
 from .models import User
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -23,4 +25,7 @@ class MyProfileView(generics.RetrieveAPIView):
     def get_object(self):
         # This method returns the currently authenticated user object
         return self.request.user
+    
+def health_check(request):
+    return HttpResponse("OK", status=200)
 # Create your views here.
